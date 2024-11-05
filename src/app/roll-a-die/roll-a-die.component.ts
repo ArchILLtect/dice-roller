@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DiceRollingService } from '../dice-rolling.service';
+import { RollHistoryComponent } from '../roll-history/roll-history.component';
 
 @Component({
   selector: 'app-roll-a-die',
@@ -7,7 +9,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class RollADieComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public diceRollingSvc: DiceRollingService
+  ) { }
 
   ngOnInit(): void {   
   }
@@ -17,6 +21,10 @@ export class RollADieComponent implements OnInit {
   roll = () => {
     this.rollResult = Math.floor(Math.random() * Number(this.sideCount)) + 1;
     this.dieRolled.emit({
+      sides: this.sideCount,
+      result: this.rollResult
+    });
+    this.diceRollingSvc.addRollHistory({
       sides: this.sideCount,
       result: this.rollResult
     });
